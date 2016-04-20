@@ -1,0 +1,142 @@
+createP
+
+M =
+
+   -0.1925   -0.0283   -0.0786   -0.7346
+   -0.0000   -0.2044   -0.0001   -0.6120
+   -0.0000   -0.0001   -0.0003   -0.0024
+
+[U_1, S_1, V_1] = svd(M);
+V_1(,:4)
+ V_1(,:4)
+     
+{Error: Expression or statement is incorrect--possibly unbalanced (, {, or [.
+} 
+V_1(:,4)
+
+ans =
+
+   -0.0000
+   -0.3380
+   -0.9344
+    0.1130
+
+t_cw = V_1(1:3,4)/V_1(4,4)
+
+t_cw =
+
+   -0.0000
+   -2.9912
+   -8.2695
+
+M_prime = M(1:3,1:3)
+
+M_prime =
+
+   -0.1925   -0.0283   -0.0786
+   -0.0000   -0.2044   -0.0001
+   -0.0000   -0.0001   -0.0003
+
+M_prime = M_prime .* (1/M_prime(3,3))
+
+M_prime =
+
+  734.6289  107.8955  299.9999
+    0.0009  780.1442    0.2641
+    0.0000    0.3597    1.0000
+
+2^2
+
+ans =
+
+     4
+
+2.^2
+
+ans =
+
+     4
+
+cosThetaX = M_prime(3, 3) ./ sqrt(M_prime(3, 3) .^ 2 + M_prime(3, 2) .^ 2);
+sinThetaX = -M_prime(3, 2) ./ sqrt(M_prime(3, 3) .^ 2 + M_prime(3, 2) .^ 2);
+cosThetaX
+
+cosThetaX =
+
+    0.9410
+
+sinThetaX
+
+sinThetaX =
+
+   -0.3384
+
+R_x = [1, 0, 0; 0, cosThetaX, -sinThetaX; 0, sinThetaX, cosThetaX];
+arcsin(-0.3384)
+{Undefined function or variable 'arcsin'.
+} 
+asin(-0.3384)
+
+ans =
+
+   -0.3452
+
+thetaX = asin(sinThetaX);
+thetaX
+
+thetaX =
+
+   -0.3452
+
+N = M_prime * R_x;
+N
+
+N =
+
+  734.6289   -0.0000  318.8125
+    0.0009  734.0199  264.2723
+    0.0000         0    1.0627
+
+cosThetaZ = N(2, 2) ./ sqrt(N(2, 1) .^ 2 + N(2, 2) .^ 2)
+
+cosThetaZ =
+
+    1.0000
+
+sinThetaZ = -N(2, 1) ./ sqrt(N(2, 1) .^ 2 + N(2, 2) .^2)
+
+sinThetaZ =
+
+  -1.2602e-06
+
+thetaZ = asin(sinThetaZ)
+
+thetaZ =
+
+  -1.2602e-06
+
+R_z = [cosThetaZ, -sinThetaZ, 0; sinThetaZ, cosThetaZ, 0; 0, 0, 1]
+
+R_z =
+
+    1.0000    0.0000         0
+   -0.0000    1.0000         0
+         0         0    1.0000
+
+K = N * R_z
+
+K =
+
+  734.6289    0.0009  318.8125
+    0.0000  734.0199  264.2723
+    0.0000    0.0000    1.0627
+
+K = K .* (1 ./ K(3, 3))
+
+K =
+
+  691.2797    0.0009  299.9999
+    0.0000  690.7067  248.6780
+    0.0000    0.0000    1.0000
+
+diary off
